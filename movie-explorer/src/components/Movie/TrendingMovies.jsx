@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import MovieGrid from './MovieGrid';
 import { getTrendingMovies } from '../../services/api';
@@ -9,11 +9,8 @@ const TrendingMovies = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchTrendingMovies();
-  });
 
-  const fetchTrendingMovies = async () => {
+  const fetchTrendingMovies = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getTrendingMovies(timeWindow);
@@ -24,7 +21,11 @@ const TrendingMovies = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeWindow]);
+
+  useEffect(() => {
+    fetchTrendingMovies();
+  }, [fetchTrendingMovies]); 
 
   const handleTimeWindowChange = (event, newValue) => {
     if (newValue !== null) {

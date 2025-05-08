@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Divider } from '@mui/material';
 import TrendingMovies from '../components/Movie/TrendingMovies';
 import MovieSearch from '../components/Movie/MovieSearch';
@@ -20,27 +20,23 @@ const HomePage = () => {
     filters: { ...filters },
   });
 
-  useEffect(() => {
-    if (lastSearch) {
-      handleSearch({ query: lastSearch, filters });
-    }
-  });
+  
 
-  const handleSearch = async (params) => {
+  const handleSearch = useCallback(async (params) => {
     try {
       setLoading(true);
       setSearching(true);
       setSearchParams(params);
       setPage(1);
       const { query, filters } = params;
-
+  
       let data;
       if (filters.genre && !query) {
         data = await getMoviesByGenre(filters.genre, 1);
       } else {
         data = await searchMovies(query, 1);
       }
-
+  
       // Apply client-side filters
       let filteredResults = data.results;
       if (filters.year) {
@@ -55,7 +51,7 @@ const HomePage = () => {
           (movie) => movie.vote_average >= parseInt(filters.rating)
         );
       }
-
+  
       setSearchResults(filteredResults);
       setTotalPages(data.total_pages);
       setError(null);
@@ -65,7 +61,13 @@ const HomePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);  // Empty dependency array since it doesn't use component state/props internally
+
+  useEffect(() => {
+    if (lastSearch) {
+      handleSearch({ query: lastSearch, filters });
+    }
+  }, [lastSearch, filters, handleSearch]);
 
   const handleLoadMore = async () => {
     if (page >= totalPages) return;

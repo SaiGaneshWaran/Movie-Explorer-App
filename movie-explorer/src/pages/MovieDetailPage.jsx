@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -12,11 +12,7 @@ const MovieDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchMovieDetails();
-  });
-
-  const fetchMovieDetails = async () => {
+  const fetchMovieDetails = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getMovieDetails(id);
@@ -30,7 +26,11 @@ const MovieDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]); // Include id as dependency
+
+  useEffect(() => {
+    fetchMovieDetails();
+  }, [fetchMovieDetails]);
 
   const handleGoBack = () => {
     navigate(-1);

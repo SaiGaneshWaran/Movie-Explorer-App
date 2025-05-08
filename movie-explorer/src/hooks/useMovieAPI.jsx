@@ -4,6 +4,7 @@ export const useMovieAPI = (apiCall, dependencies = []) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const depsArray = [...dependencies];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +21,8 @@ export const useMovieAPI = (apiCall, dependencies = []) => {
     };
 
     fetchData();
-  }, [apiCall]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiCall, ...depsArray]);
 
   return { data, loading, error };
 };
