@@ -23,15 +23,17 @@ export const getPopularMovies = async (page = 1) => {
   }
 };
 
-export const getTrendingMovies = async (timeWindow = 'day') => {
-  try {
-    const response = await api.get(`/trending/movie/${timeWindow}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching trending movies:', error);
-    throw error;
-  }
-};
+export const getTrendingMovies = async (timeWindow = 'day', page = 1) => {
+    try {
+      const response = await api.get(`/trending/movie/${timeWindow}`, {
+        params: { page }  
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching trending movies:', error);
+      throw error;
+    }
+  };
 
 export const searchMovies = async (query, page = 1) => {
   try {
@@ -78,3 +80,4 @@ export const getGenres = async () => {
     throw error;
   }
 };
+

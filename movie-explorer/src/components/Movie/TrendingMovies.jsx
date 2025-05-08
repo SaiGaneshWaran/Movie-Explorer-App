@@ -8,13 +8,18 @@ const TrendingMovies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  // Add pagination state
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const fetchTrendingMovies = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getTrendingMovies(timeWindow);
+      const data = await getTrendingMovies(timeWindow, 1); // Start with page 1
       setMovies(data.results);
+      setTotalPages(data.total_pages || 0);
+      setPage(1); // Reset to page 1
       setError(null);
     } catch (err) {
       setError('Failed to fetch trending movies. Please try again later.');
@@ -23,9 +28,27 @@ const TrendingMovies = () => {
     }
   }, [timeWindow]);
 
+  // Add Load More function
+  const handleLoadMore = async () => {
+    if (page >= totalPages) return;
+    
+    try {
+      setLoadingMore(true);
+      const nextPage = page + 1;
+      const data = await getTrendingMovies(timeWindow, nextPage);
+      
+      setMovies(prevMovies => [...prevMovies, ...data.results]);
+      setPage(nextPage);
+    } catch (err) {
+      setError('Failed to load more trending movies. Please try again.');
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
     fetchTrendingMovies();
-  }, [fetchTrendingMovies]); 
+  }, [fetchTrendingMovies]);
 
   const handleTimeWindowChange = (event, newValue) => {
     if (newValue !== null) {
@@ -64,6 +87,9 @@ const TrendingMovies = () => {
         loading={loading}
         error={error}
         onRetry={fetchTrendingMovies}
+        loadMore={handleLoadMore}  
+        hasMore={page < totalPages}  
+        loadingMore={loadingMore}  
       />
     </Box>
   );

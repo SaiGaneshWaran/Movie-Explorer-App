@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Card,
   CardMedia,
@@ -14,6 +15,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { getFullImagePath, getYearFromDate, truncateText } from '../../utils/helpers';
 import { useMovies } from '../../context/MovieContext';
+import { cardVariants, fadeInUp } from '../../utils/animations';
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
@@ -34,68 +36,95 @@ const MovieCard = ({ movie }) => {
   };
 
   return (
-    <Card 
-      sx={{ 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column',
-        position: 'relative',
-      }}
-    >
-      <Box sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}>
-        <IconButton
-          onClick={handleFavoriteClick}
-          sx={{
-            bgcolor: 'rgba(0, 0, 0, 0.5)',
-            '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.7)' },
+    <motion.div variants={fadeInUp} initial="hidden" animate="show">
+      <motion.div whileHover="hover" variants={cardVariants}>
+        <Card 
+          sx={{ 
+            height: '100%', 
+            display: 'flex', 
+            flexDirection: 'column',
+            position: 'relative',
+            transition: 'all 0.3s ease',
           }}
         >
-          {favorite ? (
-            <FavoriteIcon sx={{ color: 'red' }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ color: 'white' }} />
-          )}
-        </IconButton>
-      </Box>
-      <CardActionArea onClick={handleCardClick} sx={{ flexGrow: 1 }}>
-        <CardMedia
-          component="img"
-          height="300"
-          image={getFullImagePath(movie.poster_path)}
-          alt={movie.title}
-          sx={{
-            width: '100%',
-            objectFit: 'contain',      // <-- show entire image, letterboxing if needed
-            backgroundColor: 'grey',   // optional: fill gaps with black or your theme’s bg
-          }}
-          
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="div" noWrap>
-            {movie.title}
-            {movie.release_date && (
-              <Box component="span" sx={{ color: 'text.secondary', ml: 1 }}>
-                ({getYearFromDate(movie.release_date)})
-              </Box>
-            )}
-          </Typography>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Rating
-              value={movie.vote_average / 2}
-              precision={0.5}
-              readOnly
-              size="small"
-            />
-            <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-              {movie.vote_average.toFixed(1)}
-            </Typography>
+          <Box sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}>
+            <IconButton
+              onClick={handleFavoriteClick}
+              sx={{
+                bgcolor: 'rgba(0, 0, 0, 0.5)',
+                '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.7)' },
+              }}
+            >
+              <motion.div 
+                whileTap={{ scale: 0.85 }}
+                animate={{ scale: favorite ? [1, 1.2, 1] : 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {favorite ? (
+                  <FavoriteIcon sx={{ color: 'red' }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ color: 'white' }} />
+                )}
+              </motion.div>
+            </IconButton>
           </Box>
-          <Typography variant="body2" color="text.secondary">
-            {truncateText(movie.overview, 120)}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+          <CardActionArea onClick={handleCardClick} sx={{ flexGrow: 1 }}>
+            <Box sx={{ width: '100%', height: 450, overflow: 'hidden' }}>
+              <CardMedia
+                component="img"
+                image={getFullImagePath(movie.poster_path)}
+                alt={movie.title}
+                sx={{ 
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'brightness(0.8)',
+                  transition: 'filter 0.3s ease',
+                  objectPosition: 'center top',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  '&:hover': {
+                    filter: 'brightness(1)',
+                  },
+                }}
+              />
+            </Box>
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="div" noWrap>
+                {movie.title}
+                {movie.release_date && (
+                  <Box component="span" sx={{ color: 'text.secondary', ml: 1 }}>
+                    ({getYearFromDate(movie.release_date)})
+                  </Box>
+                )}
+              </Typography>
+              <Box display="flex" alignItems="center" mb={1}>
+                <Rating
+                  value={movie.vote_average / 2}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
+                <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                  {movie.vote_average.toFixed(1)}
+                </Typography>
+              </Box>
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+                sx={{
+                  overflow: 'hidden',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical'
+                }}
+              >
+                {truncateText(movie.overview, 120)}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 };
 

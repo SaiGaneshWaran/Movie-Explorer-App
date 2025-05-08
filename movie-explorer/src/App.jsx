@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import MovieDetailPage from './pages/MovieDetailPage';
@@ -10,6 +10,19 @@ import ProtectedRoute from './components/Auth/ProtectedRoute';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { MovieProvider } from './context/MovieContext';
+import { AnimatePresence } from 'framer-motion';
+
+// This wrapper captures the current location for animation purposes
+const AnimatedRoutesWrapper = ({ children }) => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {children}
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 const App = () => {
   return (
@@ -18,7 +31,7 @@ const App = () => {
         <AuthProvider>
           <MovieProvider>
             <Layout>
-              <Routes>
+              <AnimatedRoutesWrapper>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/movie/:id" element={<MovieDetailPage />} />
@@ -32,7 +45,7 @@ const App = () => {
                 />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
-              </Routes>
+              </AnimatedRoutesWrapper>
             </Layout>
           </MovieProvider>
         </AuthProvider>

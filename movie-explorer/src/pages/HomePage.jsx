@@ -5,6 +5,8 @@ import MovieSearch from '../components/Movie/MovieSearch';
 import MovieGrid from '../components/Movie/MovieGrid';
 import { searchMovies, getMoviesByGenre } from '../services/api';
 import { useMovies } from '../context/MovieContext';
+import { pageVariants } from '../utils/animations';
+import { motion } from 'framer-motion';
 
 const HomePage = () => {
   const { lastSearch, filters } = useMovies();
@@ -109,33 +111,41 @@ const HomePage = () => {
   };
 
   return (
-    <Box>
-      <MovieSearch
-        onSearch={handleSearch}
-        initialQuery={lastSearch}
-      />
-
-      {searching && (
-        <MovieGrid
-          movies={searchResults}
-          loading={loading}
-          error={error}
-          title={`Search Results${searchParams.query ? ` for "${searchParams.query}"` : ''}`}
-          onRetry={() => handleSearch(searchParams)}
-          loadMore={handleLoadMore}
-          hasMore={page < totalPages}
-          loadingMore={loadingMore}
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="exit"
+      variants={pageVariants}
+    >
+      <Box>
+        <MovieSearch
+          onSearch={handleSearch}
+          initialQuery={lastSearch}
         />
-      )}
 
-      {(!searching || searchResults.length === 0) && (
-        <>
-          {searching && searchResults.length === 0 && !loading && <Divider sx={{ my: 4 }} />}
-          <TrendingMovies />
-        </>
-      )}
-    </Box>
+        {searching && (
+          <MovieGrid
+            movies={searchResults}
+            loading={loading}
+            error={error}
+            title={`Search Results${searchParams.query ? ` for "${searchParams.query}"` : ''}`}
+            onRetry={() => handleSearch(searchParams)}
+            loadMore={handleLoadMore}
+            hasMore={page < totalPages}
+            loadingMore={loadingMore}
+          />
+        )}
+
+        {(!searching || searchResults.length === 0) && (
+          <>
+            {searching && searchResults.length === 0 && !loading && <Divider sx={{ my: 4 }} />}
+            <TrendingMovies />
+          </>
+        )}
+      </Box>
+    </motion.div>
   );
 };
+
 
 export default HomePage;
