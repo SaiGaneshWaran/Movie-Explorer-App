@@ -1,4 +1,3 @@
-// src/hooks/useGenres.js
 import { useState, useEffect } from 'react';
 import { getGenres } from '../services/api';
 

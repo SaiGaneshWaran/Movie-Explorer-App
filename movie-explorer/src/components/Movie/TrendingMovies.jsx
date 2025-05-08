@@ -8,7 +8,7 @@ const TrendingMovies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Add pagination state
+  
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -16,10 +16,10 @@ const TrendingMovies = () => {
   const fetchTrendingMovies = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getTrendingMovies(timeWindow, 1); // Start with page 1
+      const data = await getTrendingMovies(timeWindow, 1); 
       setMovies(data.results);
       setTotalPages(data.total_pages || 0);
-      setPage(1); // Reset to page 1
+      setPage(1); 
       setError(null);
     } catch (err) {
       setError('Failed to fetch trending movies. Please try again later.');
@@ -28,7 +28,7 @@ const TrendingMovies = () => {
     }
   }, [timeWindow]);
 
-  // Add Load More function
+  
   const handleLoadMore = async () => {
     if (page >= totalPages) return;
     

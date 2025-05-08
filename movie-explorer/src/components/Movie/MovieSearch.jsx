@@ -138,7 +138,6 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                     gap: { xs: 2, sm: 2 },
                     mb: 2
                   }}>
-                    {/* Genre Filter */}
                     <FormControl 
                       sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
                     >
@@ -160,7 +159,6 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                       </Select>
                     </FormControl>
                     
-                    {/* Year Filter */}
                     <FormControl 
                       sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
                     >
@@ -185,7 +183,6 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                       </Select>
                     </FormControl>
                     
-                    {/* Rating Filter */}
                     <FormControl 
                       sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
                     >

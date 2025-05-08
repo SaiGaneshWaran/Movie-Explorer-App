@@ -12,7 +12,6 @@ import { AuthProvider } from './context/AuthContext';
 import { MovieProvider } from './context/MovieContext';
 import { AnimatePresence } from 'framer-motion';
 
-// Create a wrapper that uses the router's location
 const AnimatedRoutes = () => {
   const location = useLocation();
   

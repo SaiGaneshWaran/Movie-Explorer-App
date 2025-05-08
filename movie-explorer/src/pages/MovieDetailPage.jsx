@@ -18,7 +18,6 @@ const MovieDetailPage = () => {
       const data = await getMovieDetails(id);
       setMovie(data);
       setError(null);
-      // Set document title based on movie
       document.title = `${data.title} - Movie Explorer`;
     } catch (err) {
       setError('Failed to fetch movie details. Please try again later.');
@@ -26,7 +25,7 @@ const MovieDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [id]); // Include id as dependency
+  }, [id]); 
 
   useEffect(() => {
     fetchMovieDetails();

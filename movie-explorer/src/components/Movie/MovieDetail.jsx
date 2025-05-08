@@ -51,7 +51,7 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
     }
   };
 
-  // Find trailer
+  
   const trailer = movie.videos?.results?.find(
     (video) => video.type === 'Trailer' && video.site === 'YouTube'
   ) || movie.videos?.results?.[0];
@@ -72,7 +72,7 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
           <Box
             sx={{
               position: 'relative',
-              height: { xs: 200, sm: 300, md: 400 },
+              height: {  md: 400 },
               backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.1), ${
                 theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.9)'
               }), url(${getFullImagePath(movie.backdrop_path, 'original')})`,

@@ -39,7 +39,6 @@ const HomePage = () => {
         data = await searchMovies(query, 1);
       }
   
-      // Apply client-side filters
       let filteredResults = data.results;
       if (filters.year) {
         filteredResults = filteredResults.filter((movie) => {
@@ -63,7 +62,7 @@ const HomePage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);  // Empty dependency array since it doesn't use component state/props internally
+  }, []);  
 
   useEffect(() => {
     if (lastSearch) {
@@ -86,7 +85,6 @@ const HomePage = () => {
         data = await searchMovies(query, nextPage);
       }
 
-      // Apply client-side filters
       let filteredResults = data.results;
       if (filters.year) {
         filteredResults = filteredResults.filter((movie) => {

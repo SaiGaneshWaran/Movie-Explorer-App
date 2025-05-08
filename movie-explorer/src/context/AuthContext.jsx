@@ -19,8 +19,6 @@ export const AuthProvider = ({ children }) => {
   }, [currentUser]);
 
   const login = (username, password) => {
-    // For demo purposes, we're just checking if both fields are filled
-    // In a real app, this would validate against a backend
     if (username && password) {
       setCurrentUser({ username });
       return true;
