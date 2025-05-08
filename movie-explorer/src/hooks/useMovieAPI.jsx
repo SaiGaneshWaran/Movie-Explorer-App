@@ -20,7 +20,7 @@ export const useMovieAPI = (apiCall, dependencies = []) => {
     };
 
     fetchData();
-  }, dependencies);
+  }, [apiCall]);
 
   return { data, loading, error };
 };

@@ -14,7 +14,7 @@ const MovieDetailPage = () => {
 
   useEffect(() => {
     fetchMovieDetails();
-  }, [id]);
+  });
 
   const fetchMovieDetails = async () => {
     try {

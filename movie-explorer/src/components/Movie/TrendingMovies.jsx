@@ -11,7 +11,7 @@ const TrendingMovies = () => {
 
   useEffect(() => {
     fetchTrendingMovies();
-  }, [timeWindow]);
+  });
 
   const fetchTrendingMovies = async () => {
     try {

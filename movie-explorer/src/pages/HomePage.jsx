@@ -24,7 +24,7 @@ const HomePage = () => {
     if (lastSearch) {
       handleSearch({ query: lastSearch, filters });
     }
-  }, []);
+  });
 
   const handleSearch = async (params) => {
     try {
