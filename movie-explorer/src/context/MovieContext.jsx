@@ -31,7 +31,10 @@ const movieReducer = (state, action) => {
     case 'SET_LAST_SEARCH':
       return { ...state, lastSearch: action.payload };
     case 'SET_FILTERS':
-      return { ...state, filters: { ...state.filters, ...action.payload } };
+        return { 
+          ...state, 
+          filters: { ...state.filters, ...action.payload } 
+        };
     case 'RESET_FILTERS':
       return { ...state, filters: initialState.filters };
     default:
@@ -66,7 +69,11 @@ export const MovieProvider = ({ children }) => {
   };
 
   const setFilters = (filters) => {
-    dispatch({ type: 'SET_FILTERS', payload: filters });
+    
+    dispatch({ 
+      type: 'SET_FILTERS', 
+      payload: filters 
+    });
   };
 
   const resetFilters = () => {
