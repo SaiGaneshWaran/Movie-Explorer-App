@@ -17,16 +17,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useMovies } from '../../context/MovieContext';
-import { useMovieAPI } from '../../hooks/useMovieAPI';
-import { getGenres } from '../../services/api';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { filterVariants } from '../../utils/animations';
+import { useGenres } from '../../hooks/useGenres';
 
 const MovieSearch = ({ onSearch, initialQuery = '' }) => {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { setLastSearch, filters, setFilters, resetFilters } = useMovies();
-  const { data: genresData } = useMovieAPI(() => getGenres());
+  const { data: genresData } = useGenres();
 
   useEffect(() => {
     setSearchQuery(initialQuery);
