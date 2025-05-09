@@ -17,7 +17,7 @@ import { getFullImagePath, getYearFromDate, truncateText } from '../../utils/hel
 import { useMovies } from '../../context/MovieContext';
 import { cardVariants, fadeInUp } from '../../utils/animations';
 import ShareIcon from '@mui/icons-material/Share';
-import ShareButtons from '../UI/ShareButtons';
+
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();

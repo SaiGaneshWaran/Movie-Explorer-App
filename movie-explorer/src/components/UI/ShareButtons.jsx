@@ -48,7 +48,7 @@ const ShareButtons = ({ title, text, url }) => {
 
   const encodedUrl = encodeURIComponent(url);
   const encodedText = encodeURIComponent(text);
-  const encodedTitle = encodeURIComponent(title);
+  
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
   const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;

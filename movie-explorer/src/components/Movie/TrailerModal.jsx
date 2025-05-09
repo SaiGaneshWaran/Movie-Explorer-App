@@ -1,4 +1,3 @@
-// src/components/Movie/TrailerModal.jsx
 import React, { useEffect, useRef } from 'react';
 import { 
   Dialog, 
@@ -16,12 +15,17 @@ const TrailerModal = ({ open, onClose, videoId, title }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const playerRef = useRef(null);
 
-  useEffect(() => {
-    if (!open && playerRef.current) {
-      
-      playerRef.current.src = playerRef.current.src;
-    }
-  }, [open]);
+useEffect(() => {
+  if (!open && playerRef.current) {
+    const currentSrc = playerRef.current.src;
+    playerRef.current.src = '';
+    setTimeout(() => {
+      if (playerRef.current) {
+        playerRef.current.src = currentSrc.replace('autoplay=1', 'autoplay=0');
+      }
+    }, 100);
+  }
+}, [open]);
 
   if (!videoId) return null;
 
