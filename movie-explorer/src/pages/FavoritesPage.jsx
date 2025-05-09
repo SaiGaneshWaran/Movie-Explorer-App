@@ -18,27 +18,27 @@ const FavoritesPage = () => {
     >
       <Box sx={{ mb: 4 }}>
         <Typography
-          variant="h3" // Changed from h4 to h3
+          variant="h3" 
           component="h1"
           sx={{
             mb: 2,
             color: "#00bcd4",
             fontWeight: "bold",
             textAlign: "center",
-            fontSize: "2.5rem", // Added explicit larger font size
+            fontSize: "2.5rem", 
           }}
         >
           My Favorite Movies
         </Typography>
 
         <Typography
-          variant="h6" // Changed from body1 to h6 for larger text
+          variant="h6" 
           color="text.secondary"
           sx={{
             mb: 4,
             fontWeight: "bold",
             textAlign: "center",
-            fontSize: "1.25rem", // Added explicit larger font size
+            fontSize: "1.25rem", 
           }}
         >
           Your personally curated collection of movies you love.
