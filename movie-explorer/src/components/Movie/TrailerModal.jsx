@@ -1,31 +1,34 @@
-import React, { useEffect, useRef } from 'react';
-import { 
-  Dialog, 
-  DialogContent, 
-  IconButton, 
-  Box, 
+import React, { useEffect, useRef } from "react";
+import {
+  Dialog,
+  DialogContent,
+  IconButton,
+  Box,
   Typography,
   useMediaQuery,
-  useTheme
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+  useTheme,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const TrailerModal = ({ open, onClose, videoId, title }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const playerRef = useRef(null);
 
-useEffect(() => {
-  if (!open && playerRef.current) {
-    const currentSrc = playerRef.current.src;
-    playerRef.current.src = '';
-    setTimeout(() => {
-      if (playerRef.current) {
-        playerRef.current.src = currentSrc.replace('autoplay=1', 'autoplay=0');
-      }
-    }, 100);
-  }
-}, [open]);
+  useEffect(() => {
+    if (!open && playerRef.current) {
+      const currentSrc = playerRef.current.src;
+      playerRef.current.src = "";
+      setTimeout(() => {
+        if (playerRef.current) {
+          playerRef.current.src = currentSrc.replace(
+            "autoplay=1",
+            "autoplay=0"
+          );
+        }
+      }, 100);
+    }
+  }, [open]);
 
   if (!videoId) return null;
 
@@ -40,10 +43,10 @@ useEffect(() => {
       PaperProps={{
         elevation: 5,
         sx: {
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           borderRadius: 2,
-          overflow: 'hidden',
-        }
+          overflow: "hidden",
+        },
       }}
     >
       <Box
@@ -53,11 +56,11 @@ useEffect(() => {
         p={2}
         sx={{
           borderBottom: 1,
-          borderColor: 'divider',
+          borderColor: "divider",
         }}
       >
         <Typography variant="h6" component="h2" id="trailer-dialog-title">
-          {title ? `${title} - Trailer` : 'Watch Trailer'}
+          {title ? `${title} - Trailer` : "Watch Trailer"}
         </Typography>
         <IconButton
           edge="end"
@@ -68,13 +71,15 @@ useEffect(() => {
           <CloseIcon />
         </IconButton>
       </Box>
-      <DialogContent sx={{ p: 0, height: fullScreen ? '100%' : '500px', bgcolor: '#000' }}>
+      <DialogContent
+        sx={{ p: 0, height: fullScreen ? "100%" : "500px", bgcolor: "#000" }}
+      >
         <Box
           sx={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
           }}
         >
           <iframe

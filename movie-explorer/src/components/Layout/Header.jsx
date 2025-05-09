@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -18,22 +18,22 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
-import { useAuth } from '../../context/AuthContext';
-import ThemeToggle from '../UI/ThemeToggle';
-import RecommendIcon from '@mui/icons-material/Recommend';
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
+import { useAuth } from "../../context/AuthContext";
+import ThemeToggle from "../UI/ThemeToggle";
+import RecommendIcon from "@mui/icons-material/Recommend";
 
 const Header = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const muiTheme = useMuiTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -48,13 +48,13 @@ const Header = () => {
   const handleLogout = () => {
     handleMenuClose();
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const toggleDrawer = (open) => (event) => {
     if (
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
     ) {
       return;
     }
@@ -63,82 +63,92 @@ const Header = () => {
 
   const drawerContent = (
     <Box
-      sx={{ 
+      sx={{
         width: 250,
-        bgcolor: '#121212',
-        color: 'white',
-        height: '100%'
+        bgcolor: "#121212",
+        color: "white",
+        height: "100%",
       }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       {currentUser && (
-        <Box sx={{ p: 3, display: 'flex', alignItems: 'center' }}>
-          <Avatar sx={{ mr: 2, bgcolor: '#00bcd4', width: 40, height: 40 }}>
+        <Box sx={{ p: 3, display: "flex", alignItems: "center" }}>
+          <Avatar sx={{ mr: 2, bgcolor: "#00bcd4", width: 40, height: 40 }}>
             {currentUser.username.charAt(0).toUpperCase()}
           </Avatar>
           <Typography variant="h6">{currentUser.username}</Typography>
         </Box>
       )}
-      <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)' }} />
+      <Divider sx={{ bgcolor: "rgba(255,255,255,0.1)" }} />
       <List>
         <ListItem button component={RouterLink} to="/" sx={{ py: 1.5 }}>
-          <ListItemIcon sx={{ color: '#00bcd4' }}>
+          <ListItemIcon sx={{ color: "#00bcd4" }}>
             <HomeIcon fontSize="large" />
           </ListItemIcon>
-          <ListItemText 
-            primary="Home" 
-            primaryTypographyProps={{ fontSize: '1.1rem' }} 
+          <ListItemText
+            primary="Home"
+            primaryTypographyProps={{ fontSize: "1.1rem" }}
           />
         </ListItem>
         {currentUser && (
-  <>
-    <ListItem button component={RouterLink} to="/favorites" sx={{ py: 1.5 }}>
-      <ListItemIcon sx={{ color: '#00bcd4' }}>
-        <FavoriteIcon fontSize="large" />
-      </ListItemIcon>
-      <ListItemText 
-        primary="Favorites" 
-        primaryTypographyProps={{ fontSize: '1.1rem' }} 
-      />
-    </ListItem>
-    
-    {/* Add this new ListItem */}
-    <ListItem button component={RouterLink} to="/recommendations" sx={{ py: 1.5 }}>
-      <ListItemIcon sx={{ color: '#00bcd4' }}>
-        <RecommendIcon fontSize="large" />
-      </ListItemIcon>
-      <ListItemText 
-        primary="For You" 
-        primaryTypographyProps={{ fontSize: '1.1rem' }} 
-      />
-    </ListItem>
-  </>
-)}
+          <>
+            <ListItem
+              button
+              component={RouterLink}
+              to="/favorites"
+              sx={{ py: 1.5 }}
+            >
+              <ListItemIcon sx={{ color: "#00bcd4" }}>
+                <FavoriteIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Favorites"
+                primaryTypographyProps={{ fontSize: "1.1rem" }}
+              />
+            </ListItem>
+
+            {/* Add this new ListItem */}
+            <ListItem
+              button
+              component={RouterLink}
+              to="/recommendations"
+              sx={{ py: 1.5 }}
+            >
+              <ListItemIcon sx={{ color: "#00bcd4" }}>
+                <RecommendIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primary="For You"
+                primaryTypographyProps={{ fontSize: "1.1rem" }}
+              />
+            </ListItem>
+          </>
+        )}
       </List>
-      <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)' }} />
+      <Divider sx={{ bgcolor: "rgba(255,255,255,0.1)" }} />
       {currentUser ? (
         <List>
           <ListItem button onClick={handleLogout} sx={{ py: 1.5 }}>
-            <ListItemIcon sx={{ color: '#00bcd4' }}>
+            <ListItemIcon sx={{ color: "#00bcd4" }}>
               <ExitToAppIcon fontSize="large" />
             </ListItemIcon>
-            <ListItemText 
-              primary="Logout" 
-              primaryTypographyProps={{ fontSize: '1.1rem' }} 
+            <ListItemText
+              primary="Logout"
+              primaryTypographyProps={{ fontSize: "1.1rem" }}
             />
           </ListItem>
         </List>
       ) : (
         <List>
           <ListItem button component={RouterLink} to="/login" sx={{ py: 1.5 }}>
-            <ListItemIcon sx={{ color: '#00bcd4' }}>
+            <ListItemIcon sx={{ color: "#00bcd4" }}>
               <AccountCircleIcon fontSize="large" />
             </ListItemIcon>
-            <ListItemText 
-              primary="Login" 
-              primaryTypographyProps={{ fontSize: '1.1rem' }} 
+            <ListItemText
+              primary="Login"
+              primaryTypographyProps={{ fontSize: "1.1rem" }}
             />
           </ListItem>
         </List>
@@ -147,7 +157,13 @@ const Header = () => {
   );
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: 'rgba(6, 6, 6, 0.85)', boxShadow: '0 4px 20px rgba(194, 68, 68, 0.5)' }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        bgcolor: "rgba(6, 6, 6, 0.85)",
+        boxShadow: "0 4px 20px rgba(194, 68, 68, 0.5)",
+      }}
+    >
       <Toolbar sx={{ py: 1 }}>
         {isMobile && (
           <IconButton
@@ -156,39 +172,39 @@ const Header = () => {
             color="inherit"
             aria-label="menu"
             onClick={toggleDrawer(true)}
-            sx={{ mr: 2, color: '#00bcd4' }}
+            sx={{ mr: 2, color: "#00bcd4" }}
           >
             <MenuIcon fontSize="large" />
           </IconButton>
         )}
-        
-        <Box 
-          component={RouterLink} 
+
+        <Box
+          component={RouterLink}
           to="/"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
             flexGrow: 1,
           }}
         >
-          <LocalMoviesIcon 
-            sx={{ 
-              color: '#00bcd4', 
-              fontSize: { xs: '2.2rem', md: '2.8rem' },
+          <LocalMoviesIcon
+            sx={{
+              color: "#00bcd4",
+              fontSize: { xs: "2.2rem", md: "2.8rem" },
               mr: 1,
-              transform: 'rotate(-10deg)'
-            }} 
+              transform: "rotate(-10deg)",
+            }}
           />
           <Typography
             variant="h4"
             sx={{
-              color: '#00bcd4',
-              textDecoration: 'none',
-              fontSize: { xs: '1.6rem', sm: '2rem' },
+              color: "#00bcd4",
+              textDecoration: "none",
+              fontSize: { xs: "1.6rem", sm: "2rem" },
               fontWeight: 900,
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-              letterSpacing: '1px'
+              textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+              letterSpacing: "1px",
             }}
           >
             Movie Explorer
@@ -198,62 +214,62 @@ const Header = () => {
         <ThemeToggle />
 
         {!isMobile && (
-          <Box sx={{ ml: 2, display: 'flex', gap: 1 }}>
-            <Button 
-              color="inherit" 
-              component={RouterLink} 
+          <Box sx={{ ml: 2, display: "flex", gap: 1 }}>
+            <Button
+              color="inherit"
+              component={RouterLink}
               to="/"
-              sx={{ 
-                color: '#00bcd4', 
-                fontSize: '1.3rem', 
-                fontWeight: 'bold',
+              sx={{
+                color: "#00bcd4",
+                fontSize: "1.3rem",
+                fontWeight: "bold",
                 px: 2,
-                '&:hover': {
-                  bgcolor: 'rgba(0, 188, 212, 0.1)',
-                }
+                "&:hover": {
+                  bgcolor: "rgba(0, 188, 212, 0.1)",
+                },
               }}
             >
               Home
             </Button>
-            
-           {currentUser && (
-  <>
-    <Button 
-      color="inherit" 
-      component={RouterLink} 
-      to="/favorites"
-      sx={{ 
-        color: '#00bcd4', 
-        fontSize: '1.3rem', 
-        fontWeight: 'bold',
-        px: 2,
-        '&:hover': {
-          bgcolor: 'rgba(0, 188, 212, 0.1)',
-        } 
-      }}
-    >
-      Favourites
-    </Button>
-    
-    {/* Add this new button */}
-    <Button 
-      color="inherit" 
-      component={RouterLink} 
-      to="/recommendations"
-      sx={{ 
-        color: '#00bcd4', 
-        fontSize: '1.3rem', 
-        fontWeight: 'bold',
-        px: 2,
-        '&:hover': {
-          bgcolor: 'rgba(0, 188, 212, 0.1)',
-        } 
-      }}
-    >
-      For You
-    </Button>
-  </>
-)}
+
+            {currentUser && (
+              <>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/favorites"
+                  sx={{
+                    color: "#00bcd4",
+                    fontSize: "1.3rem",
+                    fontWeight: "bold",
+                    px: 2,
+                    "&:hover": {
+                      bgcolor: "rgba(0, 188, 212, 0.1)",
+                    },
+                  }}
+                >
+                  Favourites
+                </Button>
+
+                {/* Add this new button */}
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/recommendations"
+                  sx={{
+                    color: "#00bcd4",
+                    fontSize: "1.3rem",
+                    fontWeight: "bold",
+                    px: 2,
+                    "&:hover": {
+                      bgcolor: "rgba(0, 188, 212, 0.1)",
+                    },
+                  }}
+                >
+                  For You
+                </Button>
+              </>
+            )}
           </Box>
         )}
 
@@ -268,7 +284,14 @@ const Header = () => {
                   aria-haspopup="true"
                   sx={{ ml: 2 }}
                 >
-                  <Avatar sx={{ width: 40, height: 40, bgcolor: '#00bcd4', border: '2px solid #00bcd4' }}>
+                  <Avatar
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      bgcolor: "#00bcd4",
+                      border: "2px solid #00bcd4",
+                    }}
+                  >
                     {currentUser.username.charAt(0).toUpperCase()}
                   </Avatar>
                 </IconButton>
@@ -280,32 +303,36 @@ const Header = () => {
                   onClose={handleMenuClose}
                   PaperProps={{
                     sx: {
-                      bgcolor: '#121212',
-                      color: 'white',
-                      border: '1px solid #333'
-                    }
+                      bgcolor: "#121212",
+                      color: "white",
+                      border: "1px solid #333",
+                    },
                   }}
                 >
-                  <MenuItem disabled sx={{ color: '#999' }}>{currentUser.username}</MenuItem>
-                  <MenuItem onClick={handleLogout} sx={{ color: '#00bcd4' }}>Logout</MenuItem>
+                  <MenuItem disabled sx={{ color: "#999" }}>
+                    {currentUser.username}
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout} sx={{ color: "#00bcd4" }}>
+                    Logout
+                  </MenuItem>
                 </Menu>
               </>
             ) : (
-              <Button 
-                color="inherit" 
-                component={RouterLink} 
+              <Button
+                color="inherit"
+                component={RouterLink}
                 to="/login"
                 variant="outlined"
-                sx={{ 
-                  ml: 2, 
-                  color: '#00bcd4', 
-                  borderColor: '#00bcd4',
-                  fontSize: '1.1rem',
-                  fontWeight: 'bold',
-                  '&:hover': {
-                    borderColor: '#00e5ff',
-                    bgcolor: 'rgba(0, 188, 212, 0.1)',
-                  }
+                sx={{
+                  ml: 2,
+                  color: "#00bcd4",
+                  borderColor: "#00bcd4",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    borderColor: "#00e5ff",
+                    bgcolor: "rgba(0, 188, 212, 0.1)",
+                  },
                 }}
               >
                 Login
@@ -314,14 +341,14 @@ const Header = () => {
           </>
         )}
       </Toolbar>
-      <Drawer 
-        anchor="left" 
-        open={drawerOpen} 
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
         onClose={toggleDrawer(false)}
         PaperProps={{
           sx: {
-            bgcolor: '#121212',
-          }
+            bgcolor: "#121212",
+          },
         }}
       >
         {drawerContent}

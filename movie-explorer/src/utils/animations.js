@@ -1,4 +1,3 @@
-// src/utils/animations.js
 export const pageVariants = {
     initial: {
       opacity: 0,

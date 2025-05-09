@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Divider } from '@mui/material';
-import TrendingMovies from '../components/Movie/TrendingMovies';
-import MovieSearch from '../components/Movie/MovieSearch';
-import MovieGrid from '../components/Movie/MovieGrid';
-import { searchMovies, getMoviesByGenre } from '../services/api';
-import { useMovies } from '../context/MovieContext';
-import { pageVariants } from '../utils/animations';
-import { motion } from 'framer-motion';
-
+import React, { useState, useEffect, useCallback } from "react";
+import { Box, Divider } from "@mui/material";
+import TrendingMovies from "../components/Movie/TrendingMovies";
+import MovieSearch from "../components/Movie/MovieSearch";
+import MovieGrid from "../components/Movie/MovieGrid";
+import { searchMovies, getMoviesByGenre } from "../services/api";
+import { useMovies } from "../context/MovieContext";
+import { pageVariants } from "../utils/animations";
+import { motion } from "framer-motion";
 
 const HomePage = () => {
   const { lastSearch, filters } = useMovies();
@@ -23,8 +22,6 @@ const HomePage = () => {
     filters: { ...filters },
   });
 
-  
-
   const handleSearch = useCallback(async (params) => {
     try {
       setLoading(true);
@@ -32,14 +29,14 @@ const HomePage = () => {
       setSearchParams(params);
       setPage(1);
       const { query, filters } = params;
-  
+
       let data;
       if (filters.genre && !query) {
         data = await getMoviesByGenre(filters.genre, 1);
       } else {
         data = await searchMovies(query, 1);
       }
-  
+
       let filteredResults = data.results;
       if (filters.year) {
         filteredResults = filteredResults.filter((movie) => {
@@ -47,23 +44,23 @@ const HomePage = () => {
           return movieYear === parseInt(filters.year);
         });
       }
-      
+
       if (filters.rating) {
         filteredResults = filteredResults.filter(
           (movie) => movie.vote_average >= parseInt(filters.rating)
         );
       }
-  
+
       setSearchResults(filteredResults);
       setTotalPages(data.total_pages);
       setError(null);
     } catch (err) {
-      setError('Failed to search movies. Please try again.');
+      setError("Failed to search movies. Please try again.");
       setSearchResults([]);
     } finally {
       setLoading(false);
     }
-  }, []);  
+  }, []);
 
   useEffect(() => {
     if (lastSearch) {
@@ -73,12 +70,12 @@ const HomePage = () => {
 
   const handleLoadMore = async () => {
     if (page >= totalPages) return;
-    
+
     try {
       setLoadingMore(true);
       const nextPage = page + 1;
       const { query, filters } = searchParams;
-      
+
       let data;
       if (filters.genre && !query) {
         data = await getMoviesByGenre(filters.genre, nextPage);
@@ -93,7 +90,7 @@ const HomePage = () => {
           return movieYear === parseInt(filters.year);
         });
       }
-      
+
       if (filters.rating) {
         filteredResults = filteredResults.filter(
           (movie) => movie.vote_average >= parseInt(filters.rating)
@@ -103,7 +100,7 @@ const HomePage = () => {
       setSearchResults([...searchResults, ...filteredResults]);
       setPage(nextPage);
     } catch (err) {
-      setError('Failed to load more movies. Please try again.');
+      setError("Failed to load more movies. Please try again.");
     } finally {
       setLoadingMore(false);
     }
@@ -117,17 +114,16 @@ const HomePage = () => {
       variants={pageVariants}
     >
       <Box>
-        <MovieSearch
-          onSearch={handleSearch}
-          initialQuery={lastSearch}
-        />
+        <MovieSearch onSearch={handleSearch} initialQuery={lastSearch} />
 
         {searching && (
           <MovieGrid
             movies={searchResults}
             loading={loading}
             error={error}
-            title={`Search Results${searchParams.query ? ` for "${searchParams.query}"` : ''}`}
+            title={`Search Results${
+              searchParams.query ? ` for "${searchParams.query}"` : ""
+            }`}
             onRetry={() => handleSearch(searchParams)}
             loadMore={handleLoadMore}
             hasMore={page < totalPages}
@@ -137,15 +133,15 @@ const HomePage = () => {
 
         {(!searching || searchResults.length === 0) && (
           <>
-            {searching && searchResults.length === 0 && !loading && <Divider sx={{ my: 4 }} />}
+            {searching && searchResults.length === 0 && !loading && (
+              <Divider sx={{ my: 4 }} />
+            )}
             <TrendingMovies />
-            
           </>
         )}
       </Box>
     </motion.div>
   );
 };
-
 
 export default HomePage;

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MovieDetail from '../components/Movie/MovieDetail';
-import { getMovieDetails } from '../services/api';
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MovieDetail from "../components/Movie/MovieDetail";
+import { getMovieDetails } from "../services/api";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -20,12 +20,12 @@ const MovieDetailPage = () => {
       setError(null);
       document.title = `${data.title} - Movie Explorer`;
     } catch (err) {
-      setError('Failed to fetch movie details. Please try again later.');
+      setError("Failed to fetch movie details. Please try again later.");
       setMovie(null);
     } finally {
       setLoading(false);
     }
-  }, [id]); 
+  }, [id]);
 
   useEffect(() => {
     fetchMovieDetails();

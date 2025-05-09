@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import React from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
-const Loader = ({ message = 'Loading...' }) => {
+const Loader = ({ message = "Loading..." }) => {
   return (
     <Box
       display="flex"

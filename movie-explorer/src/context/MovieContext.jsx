@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 const MovieContext = createContext();
 
@@ -6,36 +6,38 @@ export const useMovies = () => useContext(MovieContext);
 
 const initialState = {
   favorites: [],
-  lastSearch: '',
+  lastSearch: "",
   filters: {
-    genre: '',
-    year: '',
-    rating: '',
+    genre: "",
+    year: "",
+    rating: "",
   },
 };
 
 const movieReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_FAVORITES':
+    case "SET_FAVORITES":
       return { ...state, favorites: action.payload };
-    case 'ADD_FAVORITE':
-      if (state.favorites.some(movie => movie.id === action.payload.id)) {
+    case "ADD_FAVORITE":
+      if (state.favorites.some((movie) => movie.id === action.payload.id)) {
         return state;
       }
       return { ...state, favorites: [...state.favorites, action.payload] };
-    case 'REMOVE_FAVORITE':
+    case "REMOVE_FAVORITE":
       return {
         ...state,
-        favorites: state.favorites.filter(movie => movie.id !== action.payload),
+        favorites: state.favorites.filter(
+          (movie) => movie.id !== action.payload
+        ),
       };
-    case 'SET_LAST_SEARCH':
+    case "SET_LAST_SEARCH":
       return { ...state, lastSearch: action.payload };
-    case 'SET_FILTERS':
-        return { 
-          ...state, 
-          filters: { ...state.filters, ...action.payload } 
-        };
-    case 'RESET_FILTERS':
+    case "SET_FILTERS":
+      return {
+        ...state,
+        filters: { ...state.filters, ...action.payload },
+      };
+    case "RESET_FILTERS":
       return { ...state, filters: initialState.filters };
     default:
       return state;
@@ -44,40 +46,39 @@ const movieReducer = (state, action) => {
 
 export const MovieProvider = ({ children }) => {
   const [state, dispatch] = useReducer(movieReducer, initialState, () => {
-    const savedState = localStorage.getItem('movieState');
+    const savedState = localStorage.getItem("movieState");
     return savedState ? JSON.parse(savedState) : initialState;
   });
 
   useEffect(() => {
-    localStorage.setItem('movieState', JSON.stringify(state));
+    localStorage.setItem("movieState", JSON.stringify(state));
   }, [state]);
 
   const addToFavorites = (movie) => {
-    dispatch({ type: 'ADD_FAVORITE', payload: movie });
+    dispatch({ type: "ADD_FAVORITE", payload: movie });
   };
 
   const removeFromFavorites = (movieId) => {
-    dispatch({ type: 'REMOVE_FAVORITE', payload: movieId });
+    dispatch({ type: "REMOVE_FAVORITE", payload: movieId });
   };
 
   const isFavorite = (movieId) => {
-    return state.favorites.some(movie => movie.id === movieId);
+    return state.favorites.some((movie) => movie.id === movieId);
   };
 
   const setLastSearch = (query) => {
-    dispatch({ type: 'SET_LAST_SEARCH', payload: query });
+    dispatch({ type: "SET_LAST_SEARCH", payload: query });
   };
 
   const setFilters = (filters) => {
-    
-    dispatch({ 
-      type: 'SET_FILTERS', 
-      payload: filters 
+    dispatch({
+      type: "SET_FILTERS",
+      payload: filters,
     });
   };
 
   const resetFilters = () => {
-    dispatch({ type: 'RESET_FILTERS' });
+    dispatch({ type: "RESET_FILTERS" });
   };
 
   const value = {
@@ -92,5 +93,7 @@ export const MovieProvider = ({ children }) => {
     resetFilters,
   };
 
-  return <MovieContext.Provider value={value}>{children}</MovieContext.Provider>;
+  return (
+    <MovieContext.Provider value={value}>{children}</MovieContext.Provider>
+  );
 };

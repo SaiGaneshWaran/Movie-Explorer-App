@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -12,17 +12,17 @@ import {
   MenuItem,
   Select,
   Button,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import ClearIcon from '@mui/icons-material/Clear';
-import { useMovies } from '../../context/MovieContext';
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import ClearIcon from "@mui/icons-material/Clear";
+import { useMovies } from "../../context/MovieContext";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { filterVariants } from '../../utils/animations';
-import { useGenres } from '../../hooks/useGenres';
+import { motion, AnimatePresence } from "framer-motion";
+import { filterVariants } from "../../utils/animations";
+import { useGenres } from "../../hooks/useGenres";
 
-const MovieSearch = ({ onSearch, initialQuery = '' }) => {
+const MovieSearch = ({ onSearch, initialQuery = "" }) => {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { setLastSearch, filters, setFilters, resetFilters } = useMovies();
@@ -51,10 +51,10 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
     onSearch({
       query: searchQuery,
       filters: {
-        genre: '',
-        year: '',
-        rating: ''
-      }
+        genre: "",
+        year: "",
+        rating: "",
+      },
     });
   };
 
@@ -72,7 +72,7 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
         component="form"
         onSubmit={handleSubmit}
         elevation={3}
-        sx={{ mb: 4, overflow: 'hidden' }}
+        sx={{ mb: 4, overflow: "hidden" }}
       >
         <Box sx={{ p: { xs: 1.5, sm: 2 } }}>
           <TextField
@@ -88,11 +88,11 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     {searchQuery && (
                       <motion.div whileTap={{ scale: 0.9 }}>
                         <IconButton
-                          onClick={() => setSearchQuery('')}
+                          onClick={() => setSearchQuery("")}
                           edge="end"
                           size="small"
                         >
@@ -104,7 +104,7 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                       <IconButton
                         onClick={toggleFilters}
                         edge="end"
-                        color={filtersVisible ? 'primary' : 'default'}
+                        color={filtersVisible ? "primary" : "default"}
                         sx={{ ml: 0.5 }}
                       >
                         <FilterListIcon />
@@ -128,18 +128,24 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                 variants={filterVariants}
               >
                 <Box sx={{ p: { xs: 1.5, sm: 2 } }}>
-                  <Typography variant="subtitle1" gutterBottom fontWeight="medium">
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    fontWeight="medium"
+                  >
                     Filters
                   </Typography>
-                  
-                  <Box sx={{ 
-                    display: 'flex', 
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    gap: { xs: 2, sm: 2 },
-                    mb: 2
-                  }}>
-                    <FormControl 
-                      sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: { xs: 2, sm: 2 },
+                      mb: 2,
+                    }}
+                  >
+                    <FormControl
+                      sx={{ flex: 1, minWidth: { xs: "100%", sm: 0 } }}
                     >
                       <InputLabel id="genre-label">Genre</InputLabel>
                       <Select
@@ -158,9 +164,9 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                         ))}
                       </Select>
                     </FormControl>
-                    
-                    <FormControl 
-                      sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
+
+                    <FormControl
+                      sx={{ flex: 1, minWidth: { xs: "100%", sm: 0 } }}
                     >
                       <InputLabel id="year-label">Year</InputLabel>
                       <Select
@@ -182,9 +188,9 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                         })}
                       </Select>
                     </FormControl>
-                    
-                    <FormControl 
-                      sx={{ flex: 1, minWidth: { xs: '100%', sm: 0 } }}
+
+                    <FormControl
+                      sx={{ flex: 1, minWidth: { xs: "100%", sm: 0 } }}
                     >
                       <InputLabel id="rating-label">Min Rating</InputLabel>
                       <Select
@@ -204,27 +210,35 @@ const MovieSearch = ({ onSearch, initialQuery = '' }) => {
                       </Select>
                     </FormControl>
                   </Box>
-                  
-                  <Box sx={{ 
-                    display: 'flex', 
-                    justifyContent: 'flex-end',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    gap: { xs: 1, sm: 1 }
-                  }}>
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: { xs: 1, sm: 1 },
+                    }}
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
                       <Button
                         variant="outlined"
                         onClick={handleResetFilters}
-                        sx={{ width: { xs: '100%', sm: 'auto' } }}
+                        sx={{ width: { xs: "100%", sm: "auto" } }}
                       >
                         Reset Filters
                       </Button>
                     </motion.div>
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <Button 
-                        variant="contained" 
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Button
+                        variant="contained"
                         type="submit"
-                        sx={{ width: { xs: '100%', sm: 'auto' } }}
+                        sx={{ width: { xs: "100%", sm: "auto" } }}
                       >
                         Apply Filters
                       </Button>
