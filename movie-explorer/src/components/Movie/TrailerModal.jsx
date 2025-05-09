@@ -16,11 +16,9 @@ const TrailerModal = ({ open, onClose, videoId, title }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const playerRef = useRef(null);
 
-  // Handle clean-up when modal closes
   useEffect(() => {
-    // If dialog is closed, make sure to stop the video
     if (!open && playerRef.current) {
-      // This helps ensure the video stops playing when modal is closed
+      
       playerRef.current.src = playerRef.current.src;
     }
   }, [open]);

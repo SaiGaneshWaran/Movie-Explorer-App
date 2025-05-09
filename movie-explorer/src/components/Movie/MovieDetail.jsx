@@ -237,15 +237,14 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
       <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
         <Button
           variant="contained"
-          startIcon={<PlayArrowIcon />}
-          onClick={openTrailer} // Change this from a link to onClick
+          
+          onClick={openTrailer} 
           size="large"
         >
-          Watch Trailer
+          Watch Trailer Below
         </Button>
       </motion.div>
       
-      {/* Add the trailer modal */}
       <TrailerModal
         open={trailerOpen}
         onClose={closeTrailer}
