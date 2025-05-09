@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -25,11 +25,16 @@ import { getFullImagePath, formatDate } from '../../utils/helpers';
 import { useMovies } from '../../context/MovieContext';
 import Loader from '../UI/Loader';
 import ErrorMessage from '../UI/ErrorMessage';
+import TrailerModal from './TrailerModal';
+
+
 
 const MovieDetail = ({ movie, loading, error, onRetry }) => {
   const theme = useTheme();
   const { isFavorite, addToFavorites, removeFromFavorites } = useMovies();
   const favorite = movie ? isFavorite(movie.id) : false;
+  const [trailerOpen, setTrailerOpen] = useState(false);
+
 
   if (loading) {
     return <Loader message="Loading movie details..." />;
@@ -50,6 +55,9 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
       addToFavorites(movie);
     }
   };
+
+  const openTrailer = () => setTrailerOpen(true);
+  const closeTrailer = () => setTrailerOpen(false);
 
   
   const trailer = movie.videos?.results?.find(
@@ -224,22 +232,108 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
                   {movie.overview || 'No overview available.'}
                 </Typography>
 
-                {trailer && (
-                  <Box mt={3}>
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                      <Button
-                        variant="contained"
-                        startIcon={<PlayArrowIcon />}
-                        href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Watch Trailer
-                      </Button>
-                    </motion.div>
-                  </Box>
-                )}
+                  {trailer && (
+    <Box mt={3}>
+      <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+        <Button
+          variant="contained"
+          startIcon={<PlayArrowIcon />}
+          onClick={openTrailer} // Change this from a link to onClick
+          size="large"
+        >
+          Watch Trailer
+        </Button>
+      </motion.div>
+      
+      {/* Add the trailer modal */}
+      <TrailerModal
+        open={trailerOpen}
+        onClose={closeTrailer}
+        videoId={trailer.key}
+        title={movie.title}
+      />
+    </Box>
+  )}
               </motion.div>
+
+              <Divider sx={{ my: 3 }} />
+
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.7, duration: 0.4 }}
+>
+  {trailer && (
+    <Box mt={4} mb={2}>
+      <Typography variant="h5" component="h2" gutterBottom>
+        Trailer
+      </Typography>
+      <Box
+        sx={{
+          position: 'relative',
+          width: '100%',
+          paddingTop: '56.25%', // 16:9 aspect ratio
+          bgcolor: 'black',
+          borderRadius: 1,
+          overflow: 'hidden',
+          cursor: 'pointer',
+          '&:hover .overlay': {
+            opacity: 1,
+          },
+        }}
+        onClick={openTrailer}
+      >
+        <Box
+          component="img"
+          src={`https://img.youtube.com/vi/${trailer.key}/maxresdefault.jpg`}
+          alt={`${movie.title} Trailer`}
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+          onError={(e) => {
+           
+            e.target.src = `https://img.youtube.com/vi/${trailer.key}/mqdefault.jpg`;
+          }}
+        />
+        <Box
+          className="overlay"
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.6)',
+            opacity: 0.7,
+            transition: 'opacity 0.3s',
+          }}
+        >
+          <IconButton
+            sx={{
+              color: 'white',
+              bgcolor: 'rgba(0,0,0,0.5)',
+              '&:hover': {
+                bgcolor: 'rgba(0,0,0,0.7)',
+              },
+              width: 80,
+              height: 80,
+            }}
+          >
+            <PlayArrowIcon sx={{ fontSize: 60 }} />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
+  )}
+</motion.div>
 
               <Divider sx={{ my: 3 }} />
 
@@ -284,6 +378,7 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
                   )}
                 </List>
               </motion.div>
+              
             </Grid>
             <Grid item xs={12} md={4}>
               <motion.div
