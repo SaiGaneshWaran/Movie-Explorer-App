@@ -27,6 +27,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import { useAuth } from '../../context/AuthContext';
 import ThemeToggle from '../UI/ThemeToggle';
+import RecommendIcon from '@mui/icons-material/Recommend';
 
 const Header = () => {
   const { currentUser, logout } = useAuth();
@@ -92,16 +93,29 @@ const Header = () => {
           />
         </ListItem>
         {currentUser && (
-          <ListItem button component={RouterLink} to="/favorites" sx={{ py: 1.5 }}>
-            <ListItemIcon sx={{ color: '#00bcd4' }}>
-              <FavoriteIcon fontSize="large" />
-            </ListItemIcon>
-            <ListItemText 
-              primary="Favorites" 
-              primaryTypographyProps={{ fontSize: '1.1rem' }} 
-            />
-          </ListItem>
-        )}
+  <>
+    <ListItem button component={RouterLink} to="/favorites" sx={{ py: 1.5 }}>
+      <ListItemIcon sx={{ color: '#00bcd4' }}>
+        <FavoriteIcon fontSize="large" />
+      </ListItemIcon>
+      <ListItemText 
+        primary="Favorites" 
+        primaryTypographyProps={{ fontSize: '1.1rem' }} 
+      />
+    </ListItem>
+    
+    {/* Add this new ListItem */}
+    <ListItem button component={RouterLink} to="/recommendations" sx={{ py: 1.5 }}>
+      <ListItemIcon sx={{ color: '#00bcd4' }}>
+        <RecommendIcon fontSize="large" />
+      </ListItemIcon>
+      <ListItemText 
+        primary="For You" 
+        primaryTypographyProps={{ fontSize: '1.1rem' }} 
+      />
+    </ListItem>
+  </>
+)}
       </List>
       <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)' }} />
       {currentUser ? (
@@ -202,24 +216,44 @@ const Header = () => {
               Home
             </Button>
             
-            {currentUser && (
-              <Button 
-                color="inherit" 
-                component={RouterLink} 
-                to="/favorites"
-                sx={{ 
-                  color: '#00bcd4', 
-                  fontSize: '1.3rem', 
-                  fontWeight: 'bold',
-                  px: 2,
-                  '&:hover': {
-                    bgcolor: 'rgba(0, 188, 212, 0.1)',
-                  } 
-                }}
-              >
-                Favourites
-              </Button>
-            )}
+           {currentUser && (
+  <>
+    <Button 
+      color="inherit" 
+      component={RouterLink} 
+      to="/favorites"
+      sx={{ 
+        color: '#00bcd4', 
+        fontSize: '1.3rem', 
+        fontWeight: 'bold',
+        px: 2,
+        '&:hover': {
+          bgcolor: 'rgba(0, 188, 212, 0.1)',
+        } 
+      }}
+    >
+      Favourites
+    </Button>
+    
+    {/* Add this new button */}
+    <Button 
+      color="inherit" 
+      component={RouterLink} 
+      to="/recommendations"
+      sx={{ 
+        color: '#00bcd4', 
+        fontSize: '1.3rem', 
+        fontWeight: 'bold',
+        px: 2,
+        '&:hover': {
+          bgcolor: 'rgba(0, 188, 212, 0.1)',
+        } 
+      }}
+    >
+      For You
+    </Button>
+  </>
+)}
           </Box>
         )}
 

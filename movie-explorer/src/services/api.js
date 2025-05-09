@@ -81,3 +81,15 @@ export const getGenres = async () => {
   }
 };
 
+export const getSimilarMovies = async (movieId, page = 1) => {
+  try {
+    const response = await api.get(`/movie/${movieId}/similar`, {
+      params: { page },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching similar movies:', error);
+    throw error;
+  }
+};
+

@@ -8,6 +8,7 @@ import { useMovies } from '../context/MovieContext';
 import { pageVariants } from '../utils/animations';
 import { motion } from 'framer-motion';
 
+
 const HomePage = () => {
   const { lastSearch, filters } = useMovies();
   const [searchResults, setSearchResults] = useState([]);
@@ -138,6 +139,7 @@ const HomePage = () => {
           <>
             {searching && searchResults.length === 0 && !loading && <Divider sx={{ my: 4 }} />}
             <TrendingMovies />
+            
           </>
         )}
       </Box>

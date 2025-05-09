@@ -16,6 +16,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { getFullImagePath, getYearFromDate, truncateText } from '../../utils/helpers';
 import { useMovies } from '../../context/MovieContext';
 import { cardVariants, fadeInUp } from '../../utils/animations';
+import ShareIcon from '@mui/icons-material/Share';
+import ShareButtons from '../UI/ShareButtons';
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
@@ -67,6 +69,29 @@ const MovieCard = ({ movie }) => {
                 )}
               </motion.div>
             </IconButton>
+              <IconButton
+    onClick={(e) => {
+      e.stopPropagation();
+      // For simplicity, call navigator.share directly here
+      if (navigator.share) {
+        navigator.share({
+          title: movie.title,
+          text: `Check out ${movie.title} on Movie Explorer!`,
+          url: `${window.location.origin}/movie/${movie.id}`
+        }).catch(err => {
+          if (err.name !== 'AbortError') {
+            console.error('Error sharing', err);
+          }
+        });
+      }
+    }}
+    sx={{
+      bgcolor: 'rgba(0, 0, 0, 0.5)',
+      '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.7)' },
+    }}
+  >
+    <ShareIcon sx={{ color: 'white' }} />
+  </IconButton>
           </Box>
           <CardActionArea onClick={handleCardClick} sx={{ flexGrow: 1 }}>
             <Box sx={{ width: '100%', height: 450, overflow: 'hidden' }}>

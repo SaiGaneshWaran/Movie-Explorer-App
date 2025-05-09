@@ -11,6 +11,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { MovieProvider } from './context/MovieContext';
 import { AnimatePresence } from 'framer-motion';
+import RecommendationsPage from './pages/RecommendationsPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -29,6 +30,14 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/recommendations"
+  element={
+    <ProtectedRoute>
+      <RecommendationsPage />
+    </ProtectedRoute>
+  }
+/>
         <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
