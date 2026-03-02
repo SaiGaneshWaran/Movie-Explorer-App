@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Box, Typography, Paper, Button } from "@mui/material";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Box, Typography, Paper, Button, Chip, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 import MovieGrid from "../components/Movie/MovieGrid";
@@ -9,7 +9,7 @@ import { pageVariants } from "../utils/animations";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 
 const RecommendationsPage = () => {
-  const { favorites } = useMovies();
+  const { favorites, ratingsByMovieId } = useMovies();
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,9 +24,11 @@ const RecommendationsPage = () => {
 
     favorites.forEach((movie) => {
       if (movie.genre_ids) {
+        const userRating = ratingsByMovieId[movie.id] || 0;
+        const weight = 1 + userRating; // favor genres of highly rated favorites
         movie.genre_ids.forEach((genreId) => {
-          const count = genresMap.get(genreId) || 0;
-          genresMap.set(genreId, count + 1);
+          const current = genresMap.get(genreId) || 0;
+          genresMap.set(genreId, current + weight);
         });
       }
     });
@@ -113,6 +115,22 @@ const RecommendationsPage = () => {
     fetchRecommendations();
   }, [fetchRecommendations]);
 
+  const favoriteCount = favorites.length;
+  const ratedFavorites = useMemo(
+    () =>
+      favorites.filter((movie) => typeof ratingsByMovieId[movie.id] === "number"),
+    [favorites, ratingsByMovieId]
+  );
+
+  const averageUserRating = useMemo(() => {
+    if (!ratedFavorites.length) return null;
+    const total = ratedFavorites.reduce(
+      (sum, movie) => sum + (ratingsByMovieId[movie.id] || 0),
+      0
+    );
+    return (total / ratedFavorites.length).toFixed(1);
+  }, [ratedFavorites, ratingsByMovieId]);
+
   if (!favorites || favorites.length === 0) {
     return (
       <motion.div
@@ -160,42 +178,63 @@ const RecommendationsPage = () => {
       exit="exit"
       variants={pageVariants}
     >
-     <Box sx={{ textAlign: 'center', mb: 4 }}>
-  <Typography 
-    variant="h3" 
-    component="h1" 
-    gutterBottom
-    sx={{
-      color: '#00bcd4',
-      fontWeight: 'bold',
-      fontSize: '2.5rem',
-    }}
-  >
-    Recommendations For You
-  </Typography>
-  <Typography 
-    variant="h6" 
-    paragraph
-    sx={{
-      color: '#00bcd4',
-      fontWeight: 'bold',
-      mb: 4
-    }}
-  >
-    Based on your interest in {genreName} movies
-  </Typography>
-  
-  <MovieGrid
-    movies={recommendedMovies}
-    loading={loading}
-    error={error}
-    title={`${genreName} Movies You Might Like`}
-    onRetry={fetchRecommendations}
-    loadMore={handleLoadMore}
-    hasMore={page < totalPages}
-    loadingMore={loadingMore}
-  />
-</Box>
+      <Box sx={{ textAlign: "center", mb: 4 }}>
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          sx={{
+            color: "#00bcd4",
+            fontWeight: "bold",
+            fontSize: "2.5rem",
+          }}
+        >
+          Recommendations For You
+        </Typography>
+        <Typography
+          variant="h6"
+          paragraph
+          sx={{
+            color: "#00bcd4",
+            fontWeight: "bold",
+            mb: 2,
+          }}
+        >
+          Based on your interest in {genreName} movies
+        </Typography>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+          flexWrap="wrap"
+          sx={{ mb: 4 }}
+        >
+          <Chip
+            label={`Favorites: ${favoriteCount}`}
+            color="primary"
+            variant="outlined"
+          />
+          {averageUserRating && (
+            <Chip
+              label={`Your avg rating: ${averageUserRating}/5`}
+              color="secondary"
+              variant="outlined"
+            />
+          )}
+        </Stack>
+
+        <MovieGrid
+          movies={recommendedMovies}
+          loading={loading}
+          error={error}
+          title={`${genreName} Movies You Might Like`}
+          onRetry={fetchRecommendations}
+          loadMore={handleLoadMore}
+          hasMore={page < totalPages}
+          loadingMore={loadingMore}
+        />
+      </Box>
     </motion.div>
   );
 };
