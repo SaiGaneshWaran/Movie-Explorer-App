@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import {
   getFullImagePath,
   getYearFromDate,
@@ -24,8 +26,19 @@ import ShareIcon from "@mui/icons-material/Share";
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
-  const { isFavorite, addToFavorites, removeFromFavorites } = useMovies();
+  const {
+    isFavorite,
+    addToFavorites,
+    removeFromFavorites,
+    isInWatchlist,
+    addToWatchlist,
+    removeFromWatchlist,
+    ratingsByMovieId,
+    rateMovie,
+  } = useMovies();
   const favorite = isFavorite(movie.id);
+  const inWatchlist = isInWatchlist(movie.id);
+  const userRating = ratingsByMovieId[movie.id] || 0;
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
@@ -33,6 +46,15 @@ const MovieCard = ({ movie }) => {
       removeFromFavorites(movie.id);
     } else {
       addToFavorites(movie);
+    }
+  };
+
+  const handleWatchlistClick = (e) => {
+    e.stopPropagation();
+    if (inWatchlist) {
+      removeFromWatchlist(movie.id);
+    } else {
+      addToWatchlist(movie);
     }
   };
 
@@ -71,6 +93,21 @@ const MovieCard = ({ movie }) => {
                   <FavoriteBorderIcon sx={{ color: "white" }} />
                 )}
               </motion.div>
+            </IconButton>
+            <IconButton
+              onClick={handleWatchlistClick}
+              aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+              sx={{
+                bgcolor: "rgba(0, 0, 0, 0.5)",
+                "&:hover": { bgcolor: "rgba(0, 0, 0, 0.7)" },
+                ml: 0.5,
+              }}
+            >
+              {inWatchlist ? (
+                <BookmarkAddedIcon sx={{ color: "#ffeb3b" }} />
+              ) : (
+                <BookmarkAddOutlinedIcon sx={{ color: "white" }} />
+              )}
             </IconButton>
             <IconButton
               onClick={(e) => {
@@ -128,19 +165,41 @@ const MovieCard = ({ movie }) => {
                 )}
               </Typography>
               <Box display="flex" alignItems="center" mb={1}>
-                <Rating
-                  value={movie.vote_average / 2}
-                  precision={0.5}
-                  readOnly
-                  size="small"
-                />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ ml: 1 }}
-                >
-                  {movie.vote_average.toFixed(1)}
-                </Typography>
+                <Box display="flex" alignItems="center">
+                  <Rating
+                    value={movie.vote_average / 2}
+                    precision={0.5}
+                    readOnly
+                    size="small"
+                  />
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ ml: 0.5 }}
+                  >
+                    {movie.vote_average.toFixed(1)}
+                  </Typography>
+                </Box>
+                <Box display="flex" alignItems="center" ml={2}>
+                  <Rating
+                    value={userRating}
+                    precision={0.5}
+                    size="small"
+                    onChange={(event, newValue) => {
+                      event.stopPropagation();
+                      rateMovie(movie.id, newValue || 0);
+                    }}
+                  />
+                  {userRating > 0 && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ ml: 0.5 }}
+                    >
+                      Your rating
+                    </Typography>
+                  )}
+                </Box>
               </Box>
               <Typography
                 variant="body2"
