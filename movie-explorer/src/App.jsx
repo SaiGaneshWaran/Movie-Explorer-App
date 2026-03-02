@@ -12,6 +12,8 @@ import { AuthProvider } from './context/AuthContext';
 import { MovieProvider } from './context/MovieContext';
 import { AnimatePresence } from 'framer-motion';
 import RecommendationsPage from './pages/RecommendationsPage';
+import PersonPage from './pages/PersonPage';
+import StatsPage from './pages/StatsPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -22,6 +24,15 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/movie/:id" element={<MovieDetailPage />} />
+        <Route path="/person/:id" element={<PersonPage />} />
+        <Route
+          path="/stats"
+          element={
+            <ProtectedRoute>
+              <StatsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/favorites"
           element={

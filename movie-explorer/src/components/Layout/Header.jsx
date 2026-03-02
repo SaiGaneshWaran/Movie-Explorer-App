@@ -28,6 +28,7 @@ import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 import { useAuth } from "../../context/AuthContext";
 import ThemeToggle from "../UI/ThemeToggle";
 import RecommendIcon from "@mui/icons-material/Recommend";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 
 const Header = () => {
   const { currentUser, logout } = useAuth();
@@ -121,6 +122,21 @@ const Header = () => {
               </ListItemIcon>
               <ListItemText
                 primary="For You"
+                primaryTypographyProps={{ fontSize: "1.1rem" }}
+              />
+            </ListItem>
+
+            <ListItem
+              button
+              component={RouterLink}
+              to="/stats"
+              sx={{ py: 1.5 }}
+            >
+              <ListItemIcon sx={{ color: "#00bcd4" }}>
+                <AssessmentIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Stats"
                 primaryTypographyProps={{ fontSize: "1.1rem" }}
               />
             </ListItem>
@@ -251,7 +267,6 @@ const Header = () => {
                   Favourites
                 </Button>
 
-                {/* Add this new button */}
                 <Button
                   color="inherit"
                   component={RouterLink}
@@ -267,6 +282,23 @@ const Header = () => {
                   }}
                 >
                   For You
+                </Button>
+
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/stats"
+                  sx={{
+                    color: "#00bcd4",
+                    fontSize: "1.3rem",
+                    fontWeight: "bold",
+                    px: 2,
+                    "&:hover": {
+                      bgcolor: "rgba(0, 188, 212, 0.1)",
+                    },
+                  }}
+                >
+                  Stats
                 </Button>
               </>
             )}

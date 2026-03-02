@@ -17,6 +17,7 @@ import {
   Button,
   useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -29,6 +30,7 @@ import TrailerModal from "./TrailerModal";
 
 const MovieDetail = ({ movie, loading, error, onRetry }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { isFavorite, addToFavorites, removeFromFavorites } = useMovies();
   const favorite = movie ? isFavorite(movie.id) : false;
   const [trailerOpen, setTrailerOpen] = useState(false);
@@ -364,7 +366,11 @@ const MovieDetail = ({ movie, loading, error, onRetry }) => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 + index * 0.1, duration: 0.3 }}
                     >
-                      <ListItem alignItems="flex-start">
+                      <ListItem
+                        alignItems="flex-start"
+                        button
+                        onClick={() => navigate(`/person/${person.id}`)}
+                      >
                         <ListItemAvatar>
                           <Avatar
                             alt={person.name}
