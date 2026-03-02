@@ -3,7 +3,7 @@ import { Box, Typography, Paper, Button, Chip, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import { Link as RouterLink } from "react-router-dom";
 import MovieGrid from "../components/Movie/MovieGrid";
-import { getMoviesByGenre } from "../services/api";
+import { getMoviesByGenre, getSimilarMovies } from "../services/api";
 import { useMovies } from "../context/MovieContext";
 import { pageVariants } from "../utils/animations";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
@@ -18,6 +18,8 @@ const RecommendationsPage = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
   const [genreName, setGenreName] = useState("");
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [similarError, setSimilarError] = useState(null);
 
   const getUniqueGenres = useCallback(() => {
     const genresMap = new Map();
@@ -36,7 +38,7 @@ const RecommendationsPage = () => {
     return [...genresMap.entries()]
       .sort((a, b) => b[1] - a[1])
       .map(([genreId]) => genreId);
-  }, [favorites]);
+  }, [favorites, ratingsByMovieId]);
 
   const findGenreName = useCallback((genreId) => {
     const genreMap = {
@@ -85,6 +87,29 @@ const RecommendationsPage = () => {
     }
   }, [selectedGenreId, favorites, findGenreName]);
 
+  const fetchSimilarForTopFavorite = useCallback(async () => {
+    if (!favorites || favorites.length === 0) {
+      setSimilarMovies([]);
+      return;
+    }
+    const sorted = [...favorites].sort(
+      (a, b) =>
+        (ratingsByMovieId[b.id] || b.vote_average || 0) -
+        (ratingsByMovieId[a.id] || a.vote_average || 0)
+    );
+    const top = sorted[0];
+    if (!top) return;
+
+    try {
+      const data = await getSimilarMovies(top.id, 1);
+      setSimilarMovies((data.results || []).slice(0, 12));
+      setSimilarError(null);
+    } catch (e) {
+      setSimilarMovies([]);
+      setSimilarError("Failed to load 'Because you liked' section.");
+    }
+  }, [favorites, ratingsByMovieId]);
+
   const handleLoadMore = async () => {
     if (page >= totalPages || !selectedGenreId) return;
 
@@ -113,7 +138,8 @@ const RecommendationsPage = () => {
 
   useEffect(() => {
     fetchRecommendations();
-  }, [fetchRecommendations]);
+    fetchSimilarForTopFavorite();
+  }, [fetchRecommendations, fetchSimilarForTopFavorite]);
 
   const favoriteCount = favorites.length;
   const ratedFavorites = useMemo(
@@ -234,6 +260,16 @@ const RecommendationsPage = () => {
           hasMore={page < totalPages}
           loadingMore={loadingMore}
         />
+        {similarMovies.length > 0 && (
+          <Box sx={{ mt: 6 }}>
+            <MovieGrid
+              movies={similarMovies}
+              loading={false}
+              error={similarError}
+              title="Because you liked your top favorites"
+            />
+          </Box>
+        )}
       </Box>
     </motion.div>
   );
