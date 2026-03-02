@@ -81,12 +81,6 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    if (lastSearch) {
-      handleSearch({ query: lastSearch, filters });
-    }
-  }, [lastSearch, filters, handleSearch]);
-
-  useEffect(() => {
     const fetchDiscovery = async () => {
       try {
         const [topRatedData, nowPlayingData, upcomingData] = await Promise.all([
