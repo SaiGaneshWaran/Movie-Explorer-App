@@ -128,3 +128,23 @@ export const getUpcomingMovies = async (page = 1) => {
     throw error;
   }
 };
+
+export const getPersonDetails = async (personId) => {
+  try {
+    const response = await api.get(`/person/${personId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching person details:", error);
+    throw error;
+  }
+};
+
+export const getPersonMovieCredits = async (personId) => {
+  try {
+    const response = await api.get(`/person/${personId}/movie_credits`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching person movie credits:", error);
+    throw error;
+  }
+};
