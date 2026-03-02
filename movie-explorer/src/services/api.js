@@ -92,3 +92,39 @@ export const getSimilarMovies = async (movieId, page = 1) => {
     throw error;
   }
 };
+
+export const getTopRatedMovies = async (page = 1) => {
+  try {
+    const response = await api.get("/movie/top_rated", {
+      params: { page },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching top rated movies:", error);
+    throw error;
+  }
+};
+
+export const getNowPlayingMovies = async (page = 1) => {
+  try {
+    const response = await api.get("/movie/now_playing", {
+      params: { page },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching now playing movies:", error);
+    throw error;
+  }
+};
+
+export const getUpcomingMovies = async (page = 1) => {
+  try {
+    const response = await api.get("/movie/upcoming", {
+      params: { page },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching upcoming movies:", error);
+    throw error;
+  }
+};
