@@ -1,14 +1,36 @@
-import React from "react";
-import { Box } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { Box, Typography, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import MovieGrid from "../components/Movie/MovieGrid";
 import { useMovies } from "../context/MovieContext";
 import { motion } from "framer-motion";
-import { Typography, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import ExploreIcon from "@mui/icons-material/Explore";
 
 const FavoritesPage = () => {
-  const { favorites } = useMovies();
+  const { favorites, ratingsByMovieId } = useMovies();
+  const [sortBy, setSortBy] = useState("title");
+
+  const sortedFavorites = useMemo(() => {
+    const list = [...favorites];
+    switch (sortBy) {
+      case "ratingDesc":
+        return list.sort(
+          (a, b) =>
+            (ratingsByMovieId[b.id] || 0) - (ratingsByMovieId[a.id] || 0)
+        );
+      case "tmdbRatingDesc":
+        return list.sort((a, b) => b.vote_average - a.vote_average);
+      case "releaseDateDesc":
+        return list.sort(
+          (a, b) =>
+            new Date(b.release_date || "1900-01-01") -
+            new Date(a.release_date || "1900-01-01")
+        );
+      case "title":
+      default:
+        return list.sort((a, b) => a.title.localeCompare(b.title));
+    }
+  }, [favorites, ratingsByMovieId, sortBy]);
 
   return (
     <motion.div
@@ -45,7 +67,31 @@ const FavoritesPage = () => {
         </Typography>
 
         {favorites.length > 0 ? (
-          <MovieGrid movies={favorites} loading={false} />
+          <>
+            <Box
+              sx={{
+                mb: 3,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <FormControl size="small" sx={{ minWidth: 180 }}>
+                <InputLabel id="favorite-sort-label">Sort by</InputLabel>
+                <Select
+                  labelId="favorite-sort-label"
+                  value={sortBy}
+                  label="Sort by"
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <MenuItem value="title">Title (A–Z)</MenuItem>
+                  <MenuItem value="releaseDateDesc">Release date (newest)</MenuItem>
+                  <MenuItem value="tmdbRatingDesc">TMDb rating (high to low)</MenuItem>
+                  <MenuItem value="ratingDesc">Your rating (high to low)</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <MovieGrid movies={sortedFavorites} loading={false} />
+          </>
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
